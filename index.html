@@ -9,7 +9,7 @@
 <h1>cpw - Password Checker</h1>
 <p>How hard is it to guess the password?</p>
 <label for="password">Password:</label>
-<input type="text"
+<input type="password"
        onchange="check(this.value)"
        onkeydown="check(this.value)"
        onkeyup="check(this.value)"
@@ -17,9 +17,17 @@
        id="password">
 <br>
 <label for="hide">Hide?</label>
-<input id="hide" type="checkbox" onchange="password_input.type=this.checked?'password':'text'">
+<input id="hide" type="checkbox" checked onchange="password_input.type=this.checked?'password':'text'">
 <table style="border-collapse: collapse;" border="1">
     <tbody>
+    <tr>
+        <td>Length</td>
+        <td id="length"></td>
+    </tr>
+    <tr>
+        <td>Set Size</td>
+        <td id="size"></td>
+    </tr>
     <tr>
         <td>Difficulty</td>
         <td id="difficulty"></td>
@@ -32,9 +40,15 @@
 </table>
 <script>
   var password_input = document.getElementById('password');
+  var length_e = document.getElementById('length');
+  var size_e = document.getElementById('size');
   var difficulty_e = document.getElementById('difficulty');
   var time_e = document.getElementById('time');
   var last_s;
+
+  function isBetween(l, m, r) {
+    return l <= m && m <= r;
+  }
 
   function check(s) {
     if (s == last_s) {
@@ -42,18 +56,30 @@
     }
     last_s = s;
     var hasDigit = false;
+    var hasHex = false;
     var hasLowercase = false;
     var hasUppercase = false;
     var hasSymbol = false;
     for (var i = s.length - 1; i >= 0; i--) {
       var c = s[i];
-      if ('0' <= c && c <= '9') {
-        hasDigit = true
-      } else if ('a' <= c && c <= 'z') {
+      var sym = true;
+      if (isBetween('0', c, '9')) {
+        hasDigit = true;
+        sym = false;
+      }
+      if (isBetween('a', c, 'f') || isBetween('A', c, 'F')) {
+        hasHex = true;
+        sym = false;
+      }
+      if (isBetween('g', c, 'z')) {
         hasLowercase = true;
-      } else if ('A' <= c && c <= 'Z') {
+        sym = false;
+      }
+      if (isBetween('G', c, 'Z')) {
         hasUppercase = true;
-      } else {
+        sym = false;
+      }
+      if (sym) {
         hasSymbol = true;
       }
     }
@@ -66,6 +92,13 @@
     }
     if (hasUppercase) {
       setSize += 26;
+    }
+    if (!hasLowercase && !hasUppercase && hasHex) {
+      if (hasDigit) {
+        setSize += 6;
+      } else {
+        setSize += 16;
+      }
     }
     if (hasSymbol) {
       /* 33 symbol is ascii range */
@@ -114,21 +147,13 @@
         var time_name = time_names[i];
         var threshold = time_name[0];
         if (time < threshold) {
-          time_text = (time / last[0]) + ' ' + last[1] + 's';
+          time_text = Math.floor(time / last[0] * 100) / 100 + ' ' + last[1] + 's';
           break;
         }
       }
     }
-    console.log({
-      // hasDigit,
-      // hasLowercase,
-      // hasUppercase,
-      setSize,
-      length: s.length,
-      difficulty,
-      time,
-      time_text,
-    });
+    length_e.innerText = s.length;
+    size_e.innerText = setSize.toString();
     difficulty_e.innerText = difficulty.toString();
     time_e.innerText = time_text;
   }
