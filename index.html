@@ -6,7 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+
 <h1>cpw - Password Checker</h1>
+<div id="not_supported">
+    <h2>This browser is not supported.</h2>
+    <h3>Please update it to latest version or try Firefox.</h3>
+</div>
+
+<a href="https://github.com/beenotung/cpw">
+    <img style="position: absolute; top: 0; right: 0; border: 0;"
+         src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67"
+         alt="Fork me on GitHub"
+         data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
 <p>How hard is it to guess the password?</p>
 <label for="password">Password:</label>
 <input type="password"
@@ -157,6 +169,10 @@
     difficulty_e.innerText = difficulty.toString();
     time_e.innerText = time_text;
   }
+
+  var e = document.getElementById('not_supported');
+  e.style.display = 'none';
+  e.remove();
 </script>
 
 <h2>Reference</h2>
