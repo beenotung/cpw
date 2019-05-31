@@ -15,8 +15,8 @@
 <body>
 
 <h1>cpw - Password Checker</h1>
-<div id="not_supported">
-    <h2>This browser is not supported.</h2>
+<div id="not_supported" style="color: red">
+    <h2>This browser is not supported. (Javascript is required to do the calculation)</h2>
     <h3>Please update it to latest version or try Firefox.</h3>
 </div>
 
@@ -52,30 +52,61 @@
         <td id="difficulty"></td>
     </tr>
     <tr>
+        <td>Speed</td>
+        <td id="speed"></td>
+    </tr>
+    <tr>
         <td>Time to crack</td>
         <td id="time"></td>
     </tr>
     </tbody>
 </table>
+<button onclick="updateSpeed()">Measure Speed</button>
 <script>
   var password_input = document.getElementById('password');
   var length_e = document.getElementById('length');
   var size_e = document.getElementById('size');
   var difficulty_e = document.getElementById('difficulty');
+  var speed_e = document.getElementById('speed');
   var time_e = document.getElementById('time');
   var last_s;
+  var speed = 1e10;
+  function getSpeed(nStep, nCpu) {
+    var start = Date.now();
+    var x = 0;
+    for(var i = 0; i < nStep; i++) {
+      x++;
+    }
+    var end = Date.now();
+    var t = end - start;
+    var speed = x / (t/1000);
+    return Math.ceil(speed * nCpu);
+  }
+  speed_e.innerText = speed.toExponential();
+
+  function updateSpeed() {
+    speed = getSpeed(speed/2, 8);
+    speed_e.innerText = speed.toExponential();
+    var s = last_s;
+    if(s){
+      last_s = '';
+      check(s);
+    }
+  }
 
   function isBetween(l, m, r) {
     return l <= m && m <= r;
   }
 
   function check(s) {
-    if (s == last_s) {
+    if (s === last_s) {
       return
     }
     last_s = s;
     var hasDigit = false;
     var hasHex = false;
+    var hasLowerHex = false;
+    var hasUpperHex = false;
     var hasLowercase = false;
     var hasUppercase = false;
     var hasSymbol = false;
@@ -89,6 +120,11 @@
       if (isBetween('a', c, 'f') || isBetween('A', c, 'F')) {
         hasHex = true;
         sym = false;
+        if(isBetween('a', c, 'f')) {
+          hasLowerHex = true;
+        } else {
+          hasUpperHex = true;
+        }
       }
       if (isBetween('g', c, 'z')) {
         hasLowercase = true;
@@ -118,13 +154,15 @@
       } else {
         setSize += 16;
       }
+      if (hasUpperHex && hasLowerHex) {
+        setSize += 6;
+      }
     }
     if (hasSymbol) {
       /* 33 symbol is ascii range */
       setSize += (126 - 32 + 1) - 10 - 26 - 26;
     }
-    var difficulty = Math.pow(s.length, setSize);
-    var speed = 1e10;
+    var difficulty = Math.pow(setSize, s.length);
     var time = difficulty / speed;
     var time_names = [];
     time_names.push([1, 'Second']);
