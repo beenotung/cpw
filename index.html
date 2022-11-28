@@ -59,8 +59,8 @@
     </tbody>
 </table>
 <button onclick="updateSpeed()">Measure Speed</button>
-<p>Tips: Aim for a password with entropy of 60 or higher.</p>
-<p>Tips: You can generate passwords with entropy of 256 using <a href="https://gpw.surge.sh" target="_blank">gpw.surge.sh</a></p>
+<p>Tips: Aim for a password with entropy of 60 bits or higher.</p>
+<p>Tips: You can generate passwords with entropy of 256 bits using <a href="https://gpw.surge.sh" target="_blank">gpw.surge.sh</a></p>
 <script>
   var password_input = document.getElementById('password');
   var length_e = document.getElementById('length');
@@ -212,7 +212,7 @@
     }
     length_e.innerText = s.length;
     size_e.innerText = setSize.toString();
-    entropy_e.innerText = entropy.toLocaleString();
+    entropy_e.innerText = entropy.toLocaleString() + ' bits';
     difficulty_e.innerText = difficulty.toString();
     time_e.innerText = time_text;
   }
