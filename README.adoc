@@ -2,4 +2,4 @@
 
 check password security level.
 
-Hosted on link:https://cpw.surge.sh[CDN Surge.sh]
+Hosted on link:https://cpw.surge.sh[cpw.surge.sh]
