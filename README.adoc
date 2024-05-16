@@ -1,5 +1,0 @@
-= cpw
-
-check password security level.
-
-Hosted on link:https://cpw.surge.sh[cpw.surge.sh]
