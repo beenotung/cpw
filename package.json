@@ -20,11 +20,14 @@
   "license": "BSD-2-Clause",
   "main": "dist/core.js",
   "types": "dist/core.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "bundle": "esbuild --bundle src/ui.ts --outfile=bundle.js",
     "test": "tsc --noEmit && npm run mocha",
     "mocha": "ts-mocha \"src/**.spec.ts\"",
-    "build": "npm run clean && tsc -p . && rimraf dist/ui.js dist/*.spec.*",
+    "build": "npm run clean && tsc -p . && rimraf dist/ui.* dist/*.spec.*",
     "clean": "rimraf dist"
   },
   "devDependencies": {
