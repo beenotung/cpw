@@ -44,7 +44,7 @@ function update(text: string) {
   size_e.innerText = result.setSize.toString()
   entropy_e.innerText = result.entropy.toLocaleString() + ' bits'
   difficulty_e.innerText = result.difficulty.toString()
-  time_e.innerText = result.timeText
+  time_e.innerText = result.durationText
 }
 
 Object.assign(window, { check, updateSpeed })

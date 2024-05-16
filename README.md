@@ -4,6 +4,34 @@ Calculate the password entropy, difficulty level (number of alternative combinat
 
 Hosted on [cpw.surge.sh](https://cpw.surge.sh)
 
+## Typescript Signature
+
+```typescript
+export function cpw(
+  text: string,
+  options?: {
+    tickPerSecond?: number
+  },
+): CPWResult
+
+export type CPWResult = {
+  /** @description number of attempt per second to estimate time to crack the password */
+  tickPerSecond: number
+  /** @description number of possible characters, e.g. 10 for digits, 26 for lower case alphabets */
+  setSize: number
+  /** @description length of password */
+  length: number
+  /** @description number of possible combinations, i.e. setSize^length */
+  difficulty: number
+  /** @description number of bits, i.e. log(difficulty) / log(2) */
+  entropy: number
+  /** @description estimated number of seconds to crack the password */
+  seconds: number
+  /** @description estimated time to crack the password in human readable format, e.g. "12 Hours" */
+  durationText: string
+}
+```
+
 ## License
 
 This project is licensed with [BSD-2-Clause](./LICENSE)
