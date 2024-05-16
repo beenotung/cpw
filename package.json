@@ -1,6 +1,17 @@
 {
   "name": "cpw",
   "version": "1.0.0",
+  "description": "securely checking password strength and calculating entropy, difficulty, and time-to-crack estimates",
+  "keywords": [
+    "password",
+    "security",
+    "entropy",
+    "checker",
+    "typescript",
+    "strength",
+    "time-to-crack",
+    "difficulty"
+  ],
   "main": "dist/core.js",
   "types": "dist/core.d.ts",
   "scripts": {
@@ -10,10 +21,8 @@
     "build": "npm run clean && tsc -p . && rimraf dist/ui.js dist/*.spec.*",
     "clean": "rimraf dist"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "devDependencies": {
     "@types/chai": "^4.3.16",
     "@types/mocha": "^10.0.6",
