@@ -17,17 +17,18 @@ npm install cpw.ts
 ```typescript
 import { cpw } from 'cpw.ts'
 
-console.log(cpw('The password'))
+console.log(cpw('alice and bob'))
 /*
 {
   tickPerSecond: 10000000000,
-  setSize: 85,
-  length: 12,
-  difficulty: 1.4224175713617212e+23,
-  entropy: 76.91269123365242,
-  seconds: 14224175713617.213,
-  durationText: '450.73 Thousand Years'
+  setSize: 59,
+  length: 13,
+  difficulty: 1.0497264767613244e+23,
+  entropy: 76.47435964170394,
+  seconds: 10497264767613.244,
+  durationText: '332.63 Thousand Years'
 }
+
 */
 ```
 
