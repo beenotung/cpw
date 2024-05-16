@@ -1,232 +1,97 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>cpw - Password Checker</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <h1>cpw - Password Checker</h1>
+    <div id="not_supported" style="color: red">
+      <h2>
+        This browser is not supported. (Javascript is required to do the
+        calculation)
+      </h2>
+      <h3>Please update it to latest version or try Firefox.</h3>
+    </div>
 
-<h1>cpw - Password Checker</h1>
-<div id="not_supported" style="color: red">
-    <h2>This browser is not supported. (Javascript is required to do the calculation)</h2>
-    <h3>Please update it to latest version or try Firefox.</h3>
-</div>
+    <a href="https://github.com/beenotung/cpw">
+      <img
+        style="position: absolute; top: 0; right: 0; border: 0"
+        src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67"
+        alt="Fork me on GitHub"
+        data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"
+    /></a>
 
-<a href="https://github.com/beenotung/cpw">
-    <img style="position: absolute; top: 0; right: 0; border: 0;"
-         src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67"
-         alt="Fork me on GitHub"
-         data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+    <p>How hard is it to guess the password?</p>
+    <label for="password_input">Password:</label>
+    <input
+      type="password"
+      autocomplete="off"
+      onchange="check(this.value)"
+      onkeydown="check(this.value)"
+      onkeyup="check(this.value)"
+      onkeypress="check(this.value)"
+      id="password_input"
+    />
+    <br />
+    <label for="hide">Hide?</label>
+    <input
+      id="hide"
+      type="checkbox"
+      checked
+      onchange="password_input.type=this.checked?'password':'text'"
+    />
+    <table style="border-collapse: collapse; margin: 0.5em 0" border="1">
+      <tbody>
+        <tr>
+          <td>Length</td>
+          <td id="length"></td>
+        </tr>
+        <tr>
+          <td>Set Size</td>
+          <td id="size"></td>
+        </tr>
+        <tr>
+          <td>Entropy</td>
+          <td id="entropy"></td>
+        </tr>
+        <tr>
+          <td>Difficulty</td>
+          <td id="difficulty"></td>
+        </tr>
+        <tr>
+          <td>Speed</td>
+          <td id="speed"></td>
+        </tr>
+        <tr>
+          <td>Time to crack</td>
+          <td id="time"></td>
+        </tr>
+      </tbody>
+    </table>
+    <button onclick="updateSpeed()">Measure Speed</button>
+    <p>Tips: Aim for a password with entropy of 60 bits or higher.</p>
+    <p>
+      Tips: You can generate passwords with entropy of 256 bits using
+      <a href="https://gpw.surge.sh" target="_blank">gpw.surge.sh</a>
+    </p>
+    <script src="bundle.js"></script>
 
-<p>How hard is it to guess the password?</p>
-<label for="password">Password:</label>
-<input type="password"
-       autocomplete="off"
-       onchange="check(this.value)"
-       onkeydown="check(this.value)"
-       onkeyup="check(this.value)"
-       onkeypress="check(this.value)"
-       id="password">
-<br>
-<label for="hide">Hide?</label>
-<input id="hide" type="checkbox" checked onchange="password_input.type=this.checked?'password':'text'">
-<table style="border-collapse: collapse; margin: 0.5em 0" border="1">
-    <tbody>
-    <tr>
-        <td>Length</td>
-        <td id="length"></td>
-    </tr>
-    <tr>
-        <td>Set Size</td>
-        <td id="size"></td>
-    </tr>
-    <tr>
-        <td>Entropy</td>
-        <td id="entropy"></td>
-    </tr>
-    <tr>
-        <td>Difficulty</td>
-        <td id="difficulty"></td>
-    </tr>
-    <tr>
-        <td>Speed</td>
-        <td id="speed"></td>
-    </tr>
-    <tr>
-        <td>Time to crack</td>
-        <td id="time"></td>
-    </tr>
-    </tbody>
-</table>
-<button onclick="updateSpeed()">Measure Speed</button>
-<p>Tips: Aim for a password with entropy of 60 bits or higher.</p>
-<p>Tips: You can generate passwords with entropy of 256 bits using <a href="https://gpw.surge.sh" target="_blank">gpw.surge.sh</a></p>
-<script>
-  var password_input = document.getElementById('password');
-  var length_e = document.getElementById('length');
-  var size_e = document.getElementById('size');
-  var entropy_e = document.getElementById('entropy');
-  var difficulty_e = document.getElementById('difficulty');
-  var speed_e = document.getElementById('speed');
-  var time_e = document.getElementById('time');
-  var last_s;
-  var speed = 1e10;
-  function getSpeed(nStep, nCpu) {
-    var start = Date.now();
-    var x = 0;
-    for(var i = 0; i < nStep; i++) {
-      x++;
-    }
-    var end = Date.now();
-    var t = end - start;
-    var speed = x / (t/1000);
-    return Math.ceil(speed * nCpu);
-  }
-  speed_e.innerText = speed.toExponential();
-
-  function updateSpeed() {
-    speed = getSpeed(speed/2, 8);
-    speed_e.innerText = speed.toExponential();
-    var s = last_s;
-    if(s){
-      last_s = '';
-      check(s);
-    }
-  }
-
-  function isBetween(l, m, r) {
-    return l <= m && m <= r;
-  }
-
-  function check(s) {
-    if (s === last_s) {
-      return
-    }
-    last_s = s;
-    var hasDigit = false;
-    var hasHex = false;
-    var hasLowerHex = false;
-    var hasUpperHex = false;
-    var hasLowercase = false;
-    var hasUppercase = false;
-    var hasSymbol = false;
-    for (var i = s.length - 1; i >= 0; i--) {
-      var c = s[i];
-      var sym = true;
-      if (isBetween('0', c, '9')) {
-        hasDigit = true;
-        sym = false;
-      }
-      if (isBetween('a', c, 'f') || isBetween('A', c, 'F')) {
-        hasHex = true;
-        sym = false;
-        if(isBetween('a', c, 'f')) {
-          hasLowerHex = true;
-        } else {
-          hasUpperHex = true;
-        }
-      }
-      if (isBetween('g', c, 'z')) {
-        hasLowercase = true;
-        sym = false;
-      }
-      if (isBetween('G', c, 'Z')) {
-        hasUppercase = true;
-        sym = false;
-      }
-      if (sym) {
-        hasSymbol = true;
-      }
-    }
-    var setSize = 0;
-    if (hasDigit) {
-      setSize += 10;
-    }
-    if (hasLowercase) {
-      setSize += 26;
-    }
-    if (hasUppercase) {
-      setSize += 26;
-    }
-    if (!hasLowercase && !hasUppercase && hasHex) {
-      if (hasDigit) {
-        setSize += 6;
-      } else {
-        setSize += 16;
-      }
-      if (hasUpperHex && hasLowerHex) {
-        setSize += 6;
-      }
-    }
-    if (hasSymbol) {
-      /* 33 symbol is ascii range */
-      setSize += (126 - 32 + 1) - 10 - 26 - 26;
-    }
-    var difficulty = Math.pow(setSize, s.length);
-    var entropy = Math.log(difficulty) / Math.log(2)
-    var time = difficulty / speed;
-    var time_names = [];
-    time_names.push([1, 'Second']);
-    time_names.push([60, 'Minute']);
-    time_names.push([60 * 60, 'Hour']);
-    time_names.push([60 * 60 * 24, 'Day']);
-    time_names.push([60 * 60 * 24 * 7, 'Week']);
-    time_names.push([60 * 60 * 24 * 365.25 / 12, 'Month']);
-    time_names.push([60 * 60 * 24 * 365.25, 'Year']);
-    time_names.push([60 * 60 * 24 * 365.25 * 1e2, 'Century']);
-    time_names.push([60 * 60 * 24 * 365.25 * 1e3, 'Thousand Year']);
-    time_names.push([60 * 60 * 24 * 365.25 * 1e6, 'Million Year']);
-    time_names.push([60 * 60 * 24 * 365.25 * 1e9, 'Billion Year']);
-    time_names.push([60 * 60 * 24 * 365.25 * 1e12, 'Trillion Year']);
-    time_names.push([60 * 60 * 24 * 365.25 * 1e15, 'Quadrillion Year']);
-    time_names.push([60 * 60 * 24 * 365.25 * 1e18, 'Quintillion Year']);
-    time_names.push([60 * 60 * 24 * 365.25 * 1e21, 'Sextillion Year']);
-    time_names.push([60 * 60 * 24 * 365.25 * 1e24, 'Septillion Year']);
-    time_names.push([60 * 60 * 24 * 365.25 * 1e27, 'Octillion Year']);
-    time_names.push([60 * 60 * 24 * 365.25 * 1e30, 'Nonillion Year']);
-    time_names.push([60 * 60 * 24 * 365.25 * 1e33, 'Decillion Year']);
-    time_names.push([60 * 60 * 24 * 365.25 * 1e36, 'Undecillion Year']);
-    time_names.push([60 * 60 * 24 * 365.25 * 1e39, 'Duodecillion Year']);
-    time_names.push([60 * 60 * 24 * 365.25 * 1e42, 'Tredecillion Year']);
-    time_names.push([60 * 60 * 24 * 365.25 * 1e45, 'Quattuordecillion Year']);
-    time_names.push([60 * 60 * 24 * 365.25 * 1e48, 'Quindecillion Year']);
-    time_names.push([60 * 60 * 24 * 365.25 * 1e51, 'Sexdecillion Year']);
-    time_names.push([60 * 60 * 24 * 365.25 * 1e54, 'Septendecillion Year']);
-    time_names.push([60 * 60 * 24 * 365.25 * 1e57, 'Octodecillion Year']);
-    time_names.push([60 * 60 * 24 * 365.25 * 1e60, 'Novemdecillion Year']);
-    time_names.push([60 * 60 * 24 * 365.25 * 1e63, 'Vigintillion Year']);
-    time_names.push([60 * 60 * 24 * 365.25 * 1e303, 'Centillion Year']);
-    var time_text = time + ' seconds';
-    if (time < 1) {
-      time_text = 'instantly'
-    } else {
-      for (var i = 0; i < time_names.length; i++) {
-        var last = time_names[i - 1];
-        var time_name = time_names[i];
-        var threshold = time_name[0];
-        if (time < threshold) {
-          time_text = Math.floor(time / last[0] * 100) / 100 + ' ' + last[1] + 's';
-          break;
-        }
-      }
-    }
-    length_e.innerText = s.length;
-    size_e.innerText = setSize.toString();
-    entropy_e.innerText = entropy.toLocaleString() + ' bits';
-    difficulty_e.innerText = difficulty.toString();
-    time_e.innerText = time_text;
-  }
-
-  var e = document.getElementById('not_supported');
-  e.style.display = 'none';
-  e.remove();
-</script>
-
-<h2>Reference</h2>
-<ul>
-  <li><a href="https://github.com/howsecureismypassword/hsimp" target="_blank">howsecureismypassword</a></li>
-  <li><a href="https://www.okta.com/identity-101/password-entropy" target="_blank">Password Entropy: The Value of Unpredictable Passwords | Okta</a></li>
-</ul>
-</body>
+    <h2>Reference</h2>
+    <ul>
+      <li>
+        <a href="https://github.com/howsecureismypassword/hsimp" target="_blank"
+          >howsecureismypassword</a
+        >
+      </li>
+      <li>
+        <a
+          href="https://www.okta.com/identity-101/password-entropy"
+          target="_blank"
+          >Password Entropy: The Value of Unpredictable Passwords | Okta</a
+        >
+      </li>
+    </ul>
+  </body>
 </html>

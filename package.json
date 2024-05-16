@@ -1,0 +1,27 @@
+{
+  "name": "cpw",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "bundle": "esbuild --bundle src/ui.ts --outfile=bundle.js",
+    "test": "tsc --noEmit && npm run mocha",
+    "mocha": "ts-mocha \"src/**.spec.ts\"",
+    "build": "tsc -p ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/chai": "^4.3.16",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.12.11",
+    "chai": "^4.4.1",
+    "esbuild": "^0.20.2",
+    "mocha": "^10.4.0",
+    "ts-mocha": "^10.0.0",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.4.5"
+  }
+}
