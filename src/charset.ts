@@ -71,6 +71,12 @@ export function countCharset(text: string): number {
     return unicode_charset_size
   }
 
+  let has_lower = has_a_to_f || has_g_to_z
+  let has_upper = has_A_to_F || has_G_to_Z
+  let is_mixed = has_lower && has_upper
+  let is_hex = has_a_to_f && !has_g_to_z && !has_upper
+  let is_HEX = has_A_to_F && !has_G_to_Z && !has_lower
+
   let possible_chars = new Set<string>()
   if (has_symbol) {
     addCharset(possible_chars, charset.symbols)
@@ -84,13 +90,13 @@ export function countCharset(text: string): number {
   if (has_G_to_Z) {
     addCharset(possible_chars, charset.A_to_Z)
   }
-  if (has_a_to_f && !has_g_to_z && !has_G_to_Z) {
+  if (is_hex) {
     addCharset(possible_chars, charset.hex)
   }
-  if (has_A_to_F && !has_g_to_z && !has_G_to_Z) {
+  if (is_HEX) {
     addCharset(possible_chars, charset.HEX)
   }
-  if ((has_A_to_F || has_A_to_F) && (has_g_to_z || has_G_to_Z)) {
+  if (is_mixed) {
     addCharset(possible_chars, charset.a_to_z)
     addCharset(possible_chars, charset.A_to_Z)
   }

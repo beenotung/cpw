@@ -24,10 +24,6 @@ context('countCharset()', () => {
       expect(countCharset('A')).to.equals(16)
       expect(countCharset('A0')).to.equals(16)
     })
-    it('should count 10+6x2 for hex in mixed case', () => {
-      expect(countCharset('Aa')).to.equals(10 + 6 * 2)
-      expect(countCharset('Aa0')).to.equals(10 + 6 * 2)
-    })
   })
   context('alphabets', () => {
     it('should count 26 for alphabets in lower case', () => {
@@ -39,6 +35,7 @@ context('countCharset()', () => {
     it('should count 26x2 for alphabets in mixed case', () => {
       expect(countCharset('Hi')).to.equals(26 * 2)
       expect(countCharset('Ag')).to.equals(26 * 2)
+      expect(countCharset('Aa')).to.equals(26 * 2)
     })
   })
   context('mixed', () => {
