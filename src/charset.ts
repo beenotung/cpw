@@ -84,10 +84,10 @@ export function countCharset(text: string): number {
   if (has_G_to_Z) {
     addCharset(possible_chars, charset.A_to_Z)
   }
-  if (has_a_to_f && !has_g_to_z) {
+  if (has_a_to_f && !has_g_to_z && !has_G_to_Z) {
     addCharset(possible_chars, charset.hex)
   }
-  if (has_A_to_F && !has_G_to_Z) {
+  if (has_A_to_F && !has_g_to_z && !has_G_to_Z) {
     addCharset(possible_chars, charset.HEX)
   }
   if ((has_A_to_F || has_A_to_F) && (has_g_to_z || has_G_to_Z)) {

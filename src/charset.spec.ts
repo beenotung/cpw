@@ -38,7 +38,7 @@ context('countCharset()', () => {
     })
     it('should count 26x2 for alphabets in mixed case', () => {
       expect(countCharset('Hi')).to.equals(26 * 2)
-      expect(countCharset('Aag')).to.equals(26 * 2)
+      expect(countCharset('Ag')).to.equals(26 * 2)
     })
   })
   context('mixed', () => {
