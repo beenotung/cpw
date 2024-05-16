@@ -40,7 +40,7 @@ function updateSpeed() {
 function update(text: string) {
   last_text = text
   let result = cpw(text)
-  length_e.innerText = text.length.toString()
+  length_e.innerText = result.length.toString()
   size_e.innerText = result.setSize.toString()
   entropy_e.innerText = result.entropy.toLocaleString() + ' bits'
   difficulty_e.innerText = result.difficulty.toString()
