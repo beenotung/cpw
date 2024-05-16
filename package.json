@@ -1,12 +1,14 @@
 {
   "name": "cpw",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/core.js",
+  "types": "dist/core.d.ts",
   "scripts": {
     "bundle": "esbuild --bundle src/ui.ts --outfile=bundle.js",
     "test": "tsc --noEmit && npm run mocha",
     "mocha": "ts-mocha \"src/**.spec.ts\"",
-    "build": "tsc -p ."
+    "build": "npm run clean && tsc -p . && rimraf dist/ui.js dist/*.spec.*",
+    "clean": "rimraf dist"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +21,7 @@
     "chai": "^4.4.1",
     "esbuild": "^0.20.2",
     "mocha": "^10.4.0",
+    "rimraf": "^5.0.7",
     "ts-mocha": "^10.0.0",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
