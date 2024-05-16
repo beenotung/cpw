@@ -8,6 +8,7 @@ function findById(id: string) {
 }
 
 let password_input = findById('password_input')
+let hide_e = findById('hide')
 let length_e = findById('length')
 let size_e = findById('size')
 let entropy_e = findById('entropy')
@@ -24,6 +25,14 @@ function check() {
   let text = password_input.value
   if (text == last_text) return
   update(text)
+}
+
+hide_e.onchange = updateType
+
+updateType()
+
+function updateType() {
+  password_input.type = hide_e.checked ? 'password' : 'text'
 }
 
 speed_e.innerText = speed.toExponential()
