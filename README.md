@@ -1,6 +1,6 @@
 # cpw
 
-check password security level.
+Calculate the password entropy, difficulty level (number of alternative combinations), and estimate time needed to crack the password.
 
 Hosted on [cpw.surge.sh](https://cpw.surge.sh)
 

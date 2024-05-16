@@ -1,7 +1,7 @@
 {
   "name": "cpw",
   "version": "1.0.0",
-  "description": "securely checking password strength and calculating entropy, difficulty, and time-to-crack estimates",
+  "description": "Calculate the password entropy, difficulty level (number of alternative combinations), and estimate time needed to crack the password",
   "keywords": [
     "password",
     "security",
