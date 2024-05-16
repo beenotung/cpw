@@ -4,6 +4,33 @@ Calculate the password entropy, difficulty level (number of alternative combinat
 
 Hosted on [cpw.surge.sh](https://cpw.surge.sh)
 
+## Installation
+
+Despite the github repo and domain on surge.sh CDN of this project is `cpw`, the npm package is called `cpw.ts` because the namespace `cpw` is already taken by another developer for another purpose. It is a pity.
+
+```bash
+npm install cpw.ts
+```
+
+## Usage Example
+
+```typescript
+import { cpw } from 'cpw.ts'
+
+console.log(cpw('The password'))
+/*
+{
+  tickPerSecond: 10000000000,
+  setSize: 85,
+  length: 12,
+  difficulty: 1.4224175713617212e+23,
+  entropy: 76.91269123365242,
+  seconds: 14224175713617.213,
+  durationText: '450.73 Thousand Years'
+}
+*/
+```
+
 ## Typescript Signature
 
 ```typescript
